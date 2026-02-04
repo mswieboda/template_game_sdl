@@ -8,6 +8,12 @@ targets:
   template_game_sdl:
     main: src/template_game_sdl.cr
 
+dependencies:
+  game_sdl:
+    github: mswieboda/game_sdl
+    # path: ../game_sdl
+    version: 0.5.0
+
 crystal: '>= 1.19.1'
 
 license: MIT
