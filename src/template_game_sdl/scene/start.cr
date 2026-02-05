@@ -29,18 +29,27 @@ module TemplateGameSDL
       # end
     end
 
-    def draw(renderer : SDL::Renderer, window : SDL::Window)
-      width, height = window.size
+    def draw(renderer : SDL3::Renderer)
+      width = 1920 # Hardcoded, assuming static window size
+      height = 1080 # Hardcoded, assuming static window size
 
       # centered red rectangle
-      renderer.draw_color = SDL::Color[255, 0, 0, 64]
-      renderer.fill_rect(width // 4, height // 4, width // 2, height // 2)
+      renderer.draw_color = {255_u8, 0_u8, 0_u8, 64_u8}
+      rect = LibSDL3::FRect.new(
+        x: (width // 4).to_f32,
+        y: (height // 4).to_f32,
+        w: (width // 2).to_f32,
+        h: (height // 2).to_f32
+      )
+      renderer.fill_rect(pointerof(rect))
 
       # text
       text.x = (width - text.width) // 2
       text.y = (height - text.height) // 2
 
-      text.draw(renderer, window)
+      text.draw(renderer)
     end
+
+
   end
 end
