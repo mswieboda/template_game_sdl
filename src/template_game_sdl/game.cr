@@ -1,11 +1,21 @@
 require "./scene_manager"
 
 module TemplateGameSDL
-  class Game < GameSDL::Game
-    def initialize
-      super(title: "Game SDL Template")
+  WIDTH = 800
+  HEIGHT = 600
 
-      @scene_manager = TemplateGameSDL::SceneManager.new
+  class Game < GSDL::Game
+    def initialize
+      super(title: "Animation Ex", width: WIDTH, height: HEIGHT)
+    end
+
+    def init
+      super
+      @scene_manager = SceneManager.new
+    end
+
+    def load_textures
+      GSDL::TextureManager.load("player", "./assets/gfx/player.png")
     end
   end
 end
