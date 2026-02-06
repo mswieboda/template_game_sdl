@@ -6,7 +6,7 @@ module TemplateGameSDL
 
   class Game < GSDL::Game
     def initialize
-      super(title: "Animation Ex", width: WIDTH, height: HEIGHT)
+      super(title: "TemplateGameSDL", width: WIDTH, height: HEIGHT)
     end
 
     def init
@@ -15,6 +15,7 @@ module TemplateGameSDL
     end
 
     def load_textures
+      GSDL::FontManager.load(GSDL::Font::DEFAULT_FONT_PATH, GSDL::Font::DEFAULT_FONT_SIZE)
       GSDL::TextureManager.load("player", "./assets/gfx/player.png")
     end
   end
