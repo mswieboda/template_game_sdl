@@ -11,6 +11,7 @@ targets:
 dependencies:
   game_sdl:
     github: mswieboda/game_sdl
+    version: 0.18.0
 
 crystal: '>= 1.19.1'
 

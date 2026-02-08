@@ -9,8 +9,10 @@ ifeq ($(OS),Windows_NT)
 	LINK_FLAGS = --link-flags="/LIBPATH:$(SDL_LIB_PATH)"
 	OUTPUT_EXT = .exe
 else
+	SDL3_MIXER_LIB_DIR := /Users/matt/ext_libs/sdl3_mixer/lib
+	LINK_FLAGS_PARAMS := -L$(SDL3_MIXER_LIB_DIR) -Wl,-rpath,$(SDL3_MIXER_LIB_DIR)
+	LINK_FLAGS = --link-flags "$(LINK_FLAGS_PARAMS)"
 	# Mac/Linux flags (Homebrew handles these automatically usually)
-	LINK_FLAGS =
 	OUTPUT_EXT =
 endif
 

@@ -13,12 +13,7 @@ module TemplateGameSDL
 
       color = GSDL::Color.new(r: 0, g: 255, b: 0, a: 255)
       @text = GSDL::Text.new(text: "hello world!", color: color)
-
-      # Center the text
-      text_width = @text.width
-      text_height = @text.height
-      @text.x = (WIDTH - text_width) // 2
-      @text.y = (HEIGHT - text_height) // 2
+      @text.center(WIDTH, HEIGHT)
     end
 
     def update(dt : Float32)
