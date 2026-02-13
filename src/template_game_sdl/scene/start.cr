@@ -7,13 +7,13 @@ module TemplateGameSDL
       super(:start)
 
       @sprite = GSDL::AnimatedSprite.new("player", 128, 128)
-      @sprite.center(WIDTH, HEIGHT)
+      @sprite.center(WIDTH, HEIGHT + 300)
       @sprite.add("fire", (0..3).to_a, 12)
       @sprite.play("fire")
 
       color = GSDL::Color.new(r: 0, g: 255, b: 0, a: 255)
-      @text = GSDL::Text.new(text: "hello world!", color: color)
-      @text.center(WIDTH, HEIGHT)
+      @text = GSDL::Text.new(text: "TemplateGameSDL!", color: color)
+      @text.center(WIDTH, HEIGHT - 300)
     end
 
     def update(dt : Float32)

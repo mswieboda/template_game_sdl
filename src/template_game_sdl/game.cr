@@ -14,8 +14,11 @@ module TemplateGameSDL
       @scene_manager = SceneManager.new
     end
 
+    def load_fonts
+      GSDL::FontManager.load_default("assets/fonts/PressStart2P.ttf")
+    end
+
     def load_textures
-      GSDL::FontManager.load(GSDL::Font::DEFAULT_FONT_PATH, GSDL::Font::DEFAULT_FONT_SIZE)
       GSDL::TextureManager.load("player", "./assets/gfx/player.png")
     end
   end
