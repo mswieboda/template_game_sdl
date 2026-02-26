@@ -102,8 +102,8 @@ class Rename
 
     lines = File.read_lines(ReadmeFile)
 
-    # remove lines 3-11
-    file = lines[0..1].join("\n") + lines[11..-1].join("\n") + "\n"
+    # remove lines 3-13
+    file = lines[0..1].join("\n") + lines[13..-1].join("\n") + "\n"
 
     File.write(ReadmeFile, file)
   end
