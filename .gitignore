@@ -1,6 +1,8 @@
 /docs/
 /lib/
-/build/
 /bin/
+/build/
 /.shards/
 *.dwarf
+
+.DS_Store
