@@ -7,17 +7,15 @@ module TemplateGameSDL
     end
 
     def init
-      super
-
       @scene_manager = SceneManager.new
     end
 
     def load_fonts
-      GSDL::FontManager.load_default("fonts/PressStart2P.ttf")
+      [{"default", "fonts/PressStart2P.ttf", 16_f32}]
     end
 
     def load_textures
-      GSDL::TextureManager.load("player", "gfx/player.png")
+      [{"player", "gfx/player.png"}]
     end
   end
 end
