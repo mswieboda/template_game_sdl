@@ -8,7 +8,6 @@ class Rename
     "src/#{FileName}.cr",
     "src/rename.cr",
     "src/#{FileName}/game.cr",
-    "src/#{FileName}/scene_manager.cr",
     "src/#{FileName}/scene/start.cr"
   ]
   RenameFiles = ["src/#{FileName}.cr"]

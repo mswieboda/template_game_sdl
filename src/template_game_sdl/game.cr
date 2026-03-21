@@ -1,4 +1,4 @@
-require "./scene_manager"
+require "./scene/start"
 
 module TemplateGameSDL
   class Game < GSDL::Game
@@ -7,11 +7,11 @@ module TemplateGameSDL
     end
 
     def init
-      @scene_manager = SceneManager.new
+      GSDL::Game.push(Scene::Start.new)
     end
 
-    def load_fonts
-      [{"default", "fonts/PressStart2P.ttf", 16_f32}]
+    def load_default_font
+      "fonts/PressStart2P.ttf"
     end
 
     def load_textures
