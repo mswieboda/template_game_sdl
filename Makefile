@@ -2,6 +2,7 @@ CRYSTAL_COMPILER := crystal
 SOURCE_DIR := src
 SOURCE_FILE := template_game_sdl
 BUILD_DIR := build
+BIN_DIR := bin
 LIB_DIR := lib
 SDL3_MIXER_LIB_DIR := /usr/local/lib
 LINKFLAGS := -L$(SDL3_MIXER_LIB_DIR) -Wl,-rpath,$(SDL3_MIXER_LIB_DIR)
@@ -26,8 +27,9 @@ run: build
 	./$(BUILD_DIR)/$(SOURCE_FILE)_debug
 
 $(PACKER_BIN):
-	@echo "Installing GameSDL tools..."
-	$(CRYSTAL_COMPILER) lib/game_sdl/install_gsdl_tools.cr
+	@echo "Building packer tool..."
+	$(MKDIR_CMD) $(BIN_DIR)
+	$(CRYSTAL_COMPILER) build lib/game_sdl/src/packer.cr -o $(BIN_DIR)/gsdl-packer --release --no-debug -p
 
 install_gsdl_tools: $(PACKER_BIN)
 
