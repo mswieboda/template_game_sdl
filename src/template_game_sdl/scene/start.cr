@@ -61,6 +61,11 @@ module TemplateGameSDL
       if GSDL::Keys.just_pressed?(GSDL::Keys::Escape)
         transition_out.start
       end
+
+      if GSDL::Keys.just_pressed?(GSDL::Keys::Tab)
+        # active_object.tweens.clear
+        @sprite.flash
+      end
     end
 
     def draw(draw : GSDL::Draw)

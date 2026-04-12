@@ -19,7 +19,7 @@ default: run
 build:
 	@echo "Building..."
 	$(MKDIR_CMD) $(BUILD_DIR)
-	$(CRYSTAL_COMPILER) build $(SOURCE_DIR)/$(SOURCE_FILE).cr -o $(BUILD_DIR)/$(SOURCE_FILE)_debug --link-flags "$(LINKFLAGS)" --error-trace
+	$(CRYSTAL_COMPILER) build $(SOURCE_DIR)/$(SOURCE_FILE).cr -o $(BUILD_DIR)/$(SOURCE_FILE)_debug --link-flags "$(LINKFLAGS)" -p
 
 run: build
 	@echo "Running..."
@@ -40,7 +40,7 @@ packer: $(PACKER_FILE)
 release: $(PACKER_FILE)
 	@echo "Building release..."
 	$(MKDIR_CMD) $(BUILD_DIR)
-	$(CRYSTAL_COMPILER) build $(SOURCE_DIR)/$(SOURCE_FILE).cr -o $(BUILD_DIR)/$(SOURCE_FILE) --release --link-flags "$(LINKFLAGS)" --no-debug
+	$(CRYSTAL_COMPILER) build $(SOURCE_DIR)/$(SOURCE_FILE).cr -o $(BUILD_DIR)/$(SOURCE_FILE) --release --link-flags "$(LINKFLAGS)" --no-debug -p
 	@echo "Running release..."
 	./$(BUILD_DIR)/$(SOURCE_FILE)
 
