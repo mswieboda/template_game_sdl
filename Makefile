@@ -12,7 +12,7 @@ PACKER_FILE := build/assets.pack
 PACKER_BIN := bin/gsdl-packer
 
 # Phony targets don't represent files
-.PHONY: default build run install_gsdl_tools packer release clean
+.PHONY: default build run packer pack release clean
 
 # The default target, executed when you just run `make`
 default: run
@@ -31,13 +31,13 @@ $(PACKER_BIN):
 	$(MKDIR_CMD) $(BIN_DIR)
 	$(CRYSTAL_COMPILER) build lib/game_sdl/src/packer.cr -o $(BIN_DIR)/gsdl-packer --release --no-debug -p
 
-install_gsdl_tools: $(PACKER_BIN)
+packer: $(PACKER_BIN)
 
 $(PACKER_FILE): $(PACKER_BIN)
 	@echo "Packing assets via GameSDL packer..."
 	./$(PACKER_BIN)
 
-packer: $(PACKER_FILE)
+pack: $(PACKER_FILE)
 
 release: $(PACKER_FILE)
 	@echo "Building release..."
