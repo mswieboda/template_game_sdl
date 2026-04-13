@@ -10,9 +10,11 @@ RM_CMD := rm -rf
 MKDIR_CMD := mkdir -p
 PACKER_FILE := build/assets.pack
 PACKER_BIN := bin/gsdl-packer
+GAME_NAME := template_game_sdl
+GAME_SRC := src/template_game_sdl.cr
 
 # Phony targets don't represent files
-.PHONY: default build run packer pack build-relase run-release clean win-release
+.PHONY: default build run packer pack build-relase run-release clean release-package release-package-mac release-package-win release-package-linux
 
 # The default target, executed when you just run `make`
 default: run
@@ -61,9 +63,24 @@ clean:
 	$(RM_CMD) $(LIB_DIR)
 	@echo
 
-win-release: build-release
-	@echo "Zipping Windows release..."
-	$(MKDIR_CMD) $(BUILD_DIR)/win
-	@powershell -Command "Compress-Archive -Path $(BUILD_DIR)/* -DestinationPath $(BUILD_DIR)/win/$(SOURCE_FILE).zip -Force"
-	@start $(BUILD_DIR)\\win
-	@echo
+release-package:
+	@echo "Creating release package for $(GAME_NAME) (target: $(TARGET))..."
+	mkdir -p build
+	crystal run lib/game_sdl/src/gsdl/release_helper.cr -- \
+		--example=$(if $(EXAMPLE),$(EXAMPLE),$(GAME_NAME)) \
+		--src=$(if $(SRC),$(SRC),$(GAME_SRC)) \
+		--target=$(TARGET) \
+		$(if $(APP_NAME),--name="$(APP_NAME)") \
+		$(if $(VERSION),--version=$(VERSION)) \
+		$(if $(ICON),--icon=$(ICON)) \
+		$(if $(BUNDLE_ID),--bundle-id=$(BUNDLE_ID)) \
+		$(if $(OUTPUT),--output=$(OUTPUT))
+
+release-package-mac:
+	@$(MAKE) release-package TARGET=mac
+
+release-package-win:
+	@$(MAKE) release-package TARGET=win
+
+release-package-linux:
+	@$(MAKE) release-package TARGET=linux
