@@ -14,7 +14,7 @@ GAME_NAME := template_game_sdl
 GAME_SRC := src/template_game_sdl.cr
 
 # Phony targets don't represent files
-.PHONY: default build run packer pack build-relase run-release clean release-package release-package-mac release-package-win release-package-linux
+.PHONY: default build run packer pack build-release run-release clean release-package release-package-mac release-package-win release-package-linux
 
 # The default target, executed when you just run `make`
 default: run
@@ -67,10 +67,9 @@ release-package:
 	@echo "Creating release package for $(GAME_NAME) (target: $(TARGET))..."
 	mkdir -p build
 	crystal run lib/game_sdl/src/gsdl/release_helper.cr -- \
-		--example=$(if $(EXAMPLE),$(EXAMPLE),$(GAME_NAME)) \
 		--src=$(if $(SRC),$(SRC),$(GAME_SRC)) \
 		--target=$(TARGET) \
-		$(if $(APP_NAME),--name="$(APP_NAME)") \
+		--name=$(if $(APP_NAME),$(GAME_NAME)) \
 		$(if $(VERSION),--version=$(VERSION)) \
 		$(if $(ICON),--icon=$(ICON)) \
 		$(if $(BUNDLE_ID),--bundle-id=$(BUNDLE_ID)) \
