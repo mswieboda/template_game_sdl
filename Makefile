@@ -10,6 +10,7 @@ RM_CMD := rm -rf
 MKDIR_CMD := mkdir -p
 PACKER_FILE := build/assets.pack
 PACKER_BIN := bin/gsdl-packer
+APP_NAME := "Template Game SDL"
 GAME_NAME := template_game_sdl
 GAME_SRC := src/template_game_sdl.cr
 
@@ -67,9 +68,10 @@ release-package:
 	@echo "Creating release package for $(GAME_NAME) (target: $(TARGET))..."
 	mkdir -p build
 	crystal run lib/game_sdl/src/gsdl/release_helper.cr -- \
+		$(if $(GAME_NAME),--game=$(GAME_NAME)) \
 		--src=$(if $(SRC),$(SRC),$(GAME_SRC)) \
 		--target=$(TARGET) \
-		--name=$(if $(APP_NAME),$(GAME_NAME)) \
+		--name=$(if $(APP_NAME),$(APP_NAME),$(GAME_NAME)) \
 		$(if $(VERSION),--version=$(VERSION)) \
 		$(if $(ICON),--icon=$(ICON)) \
 		$(if $(BUNDLE_ID),--bundle-id=$(BUNDLE_ID)) \
