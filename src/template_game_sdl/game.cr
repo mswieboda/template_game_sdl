@@ -7,8 +7,6 @@ module TemplateGameSDL
         title: "TemplateGameSDL",
         logical_width: 1280,
         logical_height: 768,
-        # maximized: true,
-        # borderless: true,
         fullscreen: true,
       )
     end
