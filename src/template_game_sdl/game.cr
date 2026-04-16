@@ -3,7 +3,13 @@ require "./scene/start"
 module TemplateGameSDL
   class Game < GSDL::Game
     def initialize
-      super(title: "TemplateGameSDL", width: 800, height: 600)
+      super(
+        title: "TemplateGameSDL",
+        logical_width: 1280,
+        logical_height: 768,
+        maximized: true,
+        borderless: true,
+      )
     end
 
     def init
