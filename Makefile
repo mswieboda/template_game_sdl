@@ -14,27 +14,51 @@ APP_NAME := "Template Game SDL"
 GAME_NAME := template_game_sdl
 GAME_SRC := src/template_game_sdl.cr
 
+FLAGS ?=
+
+DEBUG_BIN := $(BUILD_DIR)/$(SOURCE_FILE)_debug
+RELEASE_BIN := $(BUILD_DIR)/$(SOURCE_FILE)
+SOURCES := $(shell find $(SOURCE_DIR) -name "*.cr")
+
 # Phony targets don't represent files
-.PHONY: default build run packer pack build-release run-release clean release-package release-package-mac release-package-win release-package-linux
+.PHONY: default build run packer pack build-release run-release clean re release-package release-package-mac release-package-win release-package-linux
 
 # The default target, executed when you just run `make`
 default: run
 
-build:
-	@echo "Building..."
+re:
+	@$(MAKE) -B run
+
+$(DEBUG_BIN): $(SOURCES)
+	@echo "Building $@..."
 	$(MKDIR_CMD) $(BUILD_DIR)
-	$(CRYSTAL_COMPILER) build $(SOURCE_DIR)/$(SOURCE_FILE).cr -o $(BUILD_DIR)/$(SOURCE_FILE)_debug --link-flags "$(LINKFLAGS)" -p
+	$(CRYSTAL_COMPILER) build $(SOURCE_DIR)/$(SOURCE_FILE).cr -o $@ --link-flags "$(LINKFLAGS)" -p $(FLAGS)
 	@echo
 
-run: build
+build: $(DEBUG_BIN)
+
+run: $(DEBUG_BIN)
 	@echo "Running..."
-	./$(BUILD_DIR)/$(SOURCE_FILE)_debug
+	./$(DEBUG_BIN)
+	@echo
+
+$(RELEASE_BIN): $(SOURCES) $(PACKER_FILE)
+	@echo "Building release $@..."
+	$(MKDIR_CMD) $(BUILD_DIR)
+	$(CRYSTAL_COMPILER) build $(SOURCE_DIR)/$(SOURCE_FILE).cr -o $@ --release --link-flags "$(LINKFLAGS)" --no-debug -p $(FLAGS)
+	@echo
+
+build-release: $(RELEASE_BIN)
+
+run-release: $(RELEASE_BIN)
+	@echo "Running release..."
+	./$(RELEASE_BIN)
 	@echo
 
 $(PACKER_BIN):
 	@echo "Building packer tool..."
 	$(MKDIR_CMD) $(BIN_DIR)
-	$(CRYSTAL_COMPILER) build lib/game_sdl/src/packer.cr -o $(BIN_DIR)/gsdl-packer --release --no-debug -p
+	$(CRYSTAL_COMPILER) build lib/game_sdl/src/packer.cr -o $(BIN_DIR)/gsdl-packer --release --no-debug -p $(FLAGS)
 	@echo
 
 packer: $(PACKER_BIN)
@@ -46,22 +70,10 @@ $(PACKER_FILE): $(PACKER_BIN)
 
 pack: $(PACKER_FILE)
 
-build-release: $(PACKER_FILE)
-	@echo "Building release..."
-	$(MKDIR_CMD) $(BUILD_DIR)
-	$(CRYSTAL_COMPILER) build $(SOURCE_DIR)/$(SOURCE_FILE).cr -o $(BUILD_DIR)/$(SOURCE_FILE) --release --link-flags "$(LINKFLAGS)" --no-debug -p
-	@echo
-
-run-release: build-release
-	@echo "Running release..."
-	./$(BUILD_DIR)/$(SOURCE_FILE)
-	@echo
-
 clean:
 	@echo "Executing clean..."
 	$(RM_CMD) $(BIN_DIR)
 	$(RM_CMD) $(BUILD_DIR)
-	$(RM_CMD) $(LIB_DIR)
 	@echo
 
 release-package:
@@ -77,11 +89,12 @@ release-package:
 		$(if $(BUNDLE_ID),--bundle-id=$(BUNDLE_ID)) \
 		$(if $(OUTPUT),--output=$(OUTPUT))
 
-release-package-mac: TARGET := mac
-release-package-mac: release-package
+release-package-mac:
+	@$(MAKE) release-package TARGET=mac
 
-release-package-win: TARGET := win
-release-package-win: release-package
+release-package-win:
+	@$(MAKE) release-package TARGET=win
 
-release-package-linux: TARGET := linux
-release-package-linux: release-package
+release-package-linux:
+	@$(MAKE) release-package TARGET=linux
+
