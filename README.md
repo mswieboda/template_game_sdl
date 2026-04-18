@@ -24,21 +24,19 @@ follow [sdl3.cr install instructions](https://github.com/mswieboda/sdl3.cr) to g
 shards install
 ```
 
-3. Install GameSDL Tools
+3. Build and Run
 
 ```
-crystal lib/game_sdl/install_gsdl_tools.cr
+make build
 ```
 
-installs tools to your `./bin` directory, such as `./bin/gsdl-packer`
-
-which packages all assets into an `assets/assets.pack` binary file
-
-see usage via:
-
 ```
-./bin/gsdl-packer --help
+make run
 ```
+
+(`run` will build if needed)
+
+outputs to `build` folder. there are also release make actions, see the `Makefile` for full action list
 
 ## Documentation
 
