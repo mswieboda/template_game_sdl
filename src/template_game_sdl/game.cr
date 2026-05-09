@@ -5,9 +5,12 @@ module TemplateGameSDL
     def initialize
       super(
         title: "TemplateGameSDL",
-        logical_width: 1280,
-        logical_height: 768,
-        fullscreen: true,
+        width: 1024,
+        height: 768,
+        # logical_width: 1024,
+        # logical_height: 768,
+        # maximized: true,
+        high_pixel_density: true
       )
     end
 

@@ -1,7 +1,7 @@
 module TemplateGameSDL
   class Scene::Start < GSDL::Scene
+    @text : GSDL::TextBeta
     @sprite : GSDL::AnimatedSprite
-    @text : GSDL::Text
 
     def initialize
       transition_in = GSDL::FadeTransition.new(
@@ -21,9 +21,42 @@ module TemplateGameSDL
       @sprite.add("fire", (0..3).to_a, 12)
       @sprite.play("fire")
 
+      @entities << @sprite
+
+      hud = GSDL::HUD.new
+
       color = GSDL::Color.new(g: 255, a: 255)
-      @text = GSDL::Text.new(text: "TemplateGameSDL!", color: color)
-      @text.center(width: GSDL::Game.width, height: GSDL::Game.height - 300)
+      hud << GSDL::HUDText.new(
+        text: "TemplateGameSDL!",
+        color: color,
+        anchor: GSDL::Anchor::TopCenter,
+        offset_y: 128,
+        origin: {0.5_f32, 0.5_f32}
+      )
+
+      # TextBeta testing
+      font_path = "./assets/fonts/PressStart2P.ttf"
+      font_atlas = GSDL::FontAtlas.new(font_path, 16)
+      @text = GSDL::TextBeta.new(
+        font_atlas: font_atlas,
+        text: "jumping quickly over lazy dogs\nis good exercise!\nbatty1 batty2 batty3",
+        x: Game.width // 2,
+        y: Game.height // 2,
+        origin: {0.5_f32, 0.5_f32},
+        h_align: GSDL::HorizontalAlign::Center,
+        v_align: GSDL::VerticalAlign::Center,
+        line_spacing: 2,
+        # typing: GSDL::TextBeta::Typing::Word,
+        shadow: {2, 2},
+        shadow_color: GSDL::Color::Magenta,
+        # outline: 2,
+        # rotation: 30,
+        character_spacing: 2,
+        width: 300,
+        height: 300,
+      )
+
+      self.hud = hud
 
       # tween sprite to start
       tween = @sprite.tween
@@ -56,7 +89,7 @@ module TemplateGameSDL
     end
 
     def update(dt : Float32)
-      @sprite.update(dt)
+      super(dt)
 
       if GSDL::Keys.just_pressed?(GSDL::Keys::Escape)
         transition_out.start
@@ -68,9 +101,35 @@ module TemplateGameSDL
       end
     end
 
-    def draw(draw : GSDL::Draw)
-      @sprite.draw(draw)
+    # NOTE: no `draw_camera_view` since entities and HUD are drawn automatically
+
+    def draw_screen_overlay(draw : GSDL::Draw)
+      super(draw)
+
+      box_bg = GSDL::Box.new(
+        x: @text.x,
+        y: @text.y,
+        width: @text.width,
+        height: @text.height,
+        origin: @text.origin,
+        scale: @text.scale,
+        rotation: @text.rotation,
+        color: GSDL::Color.gray(64),
+        z_index: @text.z_index - 1,
+      )
+
+      circle_xy = GSDL::Circle.new(
+        x: @text.x,
+        y: @text.y,
+        origin: {0.5_f32, 0.5_f32},
+        radius: 16,
+        color: GSDL::Color::Magenta,
+        z_index: @text.z_index_max + 1,
+      )
+
+      box_bg.draw(draw)
       @text.draw(draw)
+      circle_xy.draw(draw)
     end
   end
 end
